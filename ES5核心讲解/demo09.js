@@ -17,3 +17,21 @@ yideng.method(fn, 1);
  * 使用arguments[0]()执行fn的时候，此时，this指向arguments，此时this.length = arguments.length = 2
  * 
  */
+
+
+/**
+ * arguments:它是一种类数组对象 { '0':1,length:1 }
+ * 非严格模式下 true
+ * 严格模式下 false 此时arguments报存的就是最初的形参
+ * 转数组： 使用 Array.prorotype.slice.call(arguments)
+ * 
+ */
+
+function fn(a) {
+    'use strict'
+
+    a = 10;
+    console.log(a === arguments[0], arguments[0]);
+}
+
+fn(1);
