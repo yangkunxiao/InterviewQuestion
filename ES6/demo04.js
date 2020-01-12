@@ -1,3 +1,92 @@
+/*************************************** 迭代器Iterator************************************/
+//Iterator遍历器
+/**
+ * 遍历器（Iterator）
+ * 它是一种接口，为各种不同的数据结构提供统一的访问机制。
+ * 任何数据结构只要部署 Iterator 接口，就可以完成遍历操作（即依次处理该数据结构的所有成员）。
+ * 
+ * Iterator 的作用有三个：
+ * 一是为各种数据结构，提供一个统一的、简便的访问接口；
+ * 二是使得数据结构的成员能够按某种次序排列；
+ * 三是 ES6 创造了一种新的遍历命令for...of循环，Iterator 接口主要供for...of消费
+ * 
+ * Iterator 的遍历过程是这样的：
+ * 创建一个指针对象，指向当前数据结构的起始位置。也就是说，遍历器对象本质上，就是一个指针对象。
+ * 第一次调用指针对象的next方法，可以将指针指向数据结构的第一个成员。
+ * 第二次调用指针对象的next方法，指针就指向数据结构的第二个成员。
+ * 不断调用指针对象的next方法，直到它指向数据结构的结束位置。
+ * 
+ * 指针对象的next方法，用来移动指针。
+ * 开始时，指针指向数组的开始位置。
+ * 然后，每次调用next方法，指s针就会指向数组的下一个成员
+ */
+
+/* var obj = {
+    a: 10,
+    b: 20,
+    c: 30
+};
+//给对象添加迭代器
+obj[Symbol.iterator] = function() {
+    let _this = this;
+    let keys = Object.keys(_this);
+    let count = 0;
+    return {
+        next() {
+            const done = count >= keys.length;
+            return {
+                value: !done ? _this[keys[count++]] : undefined,
+                done
+            }
+        }
+    }
+};
+
+for (const keys of obj) {
+    console.log(keys)
+} */
+
+/* 
+
+const createAsyncIterator = obj => {
+    let keys = Object.keys(obj);
+    let count = 0;
+    return {
+        next() {
+            const done = count >= keys.length;
+            return {
+                value: !done ? obj[keys[count++]] : undefined,
+                done
+            }
+        }
+    }
+};
+
+function* makeIteratorForObject(obj) {
+    for (let key in obj) {
+        yield [key, obj[key]]
+    }
+}
+
+//添加到对象原型上
+Object.prototype[Symbol.iterator] = function*() {
+    for (let key in this) {
+        yield [key, this[key]]
+    }
+}
+
+
+let obj = makeIteratorForObject({ a: 10, b: 20, c: 30 })
+
+for (const key of obj) {
+    console.log(key)
+} */
+
+
+
+
+
+/*************************************** 生成器Generator************************************/
 /**
  * generator:生成器函数
  * 执行生成器函数会返回一个迭代器对象，返回一个指向内部状态的指针对象
@@ -27,28 +116,6 @@ function* sum() {
 let l = sum();
 console.log(l.next())
 console.log(l.next(3).value)
-
-//对象使用for of
-
-Object.prototype[Symbol.iterator] = function*() {
-    for (let key in this) {
-        // console.log(this, this[key], '0')
-        yield [key, this[key]]
-    }
-}
-
-// myIterable[Symbol.iterator] = function*() {
-//     for (let key in this) {
-//         // console.log(this, this[key], '0')
-//         yield [key, this[key]]
-//     }
-// };
-
-for (const key of { c: 0, d: 1 }) {
-    console.log(key, '1')
-}
-
-
 
 function* foo(x) {
     var y = 2 * (yield(x + 1));
