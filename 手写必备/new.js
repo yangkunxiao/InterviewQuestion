@@ -22,11 +22,6 @@ Function.prototype.new = function() {
     return obj
 };
 
-let obj = {
-    a: 10,
-    b: 20
-};
-
 function fn() {
     let args = Array.prototype.slice.call(arguments);
     this.getName = function() {
