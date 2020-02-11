@@ -9,7 +9,7 @@ function JSONString(obj) {
     //获取传入的值的数据类型
     let type = typeof obj;
     if (type !== 'object') {
-        if (!/(function|undefined|symbol)/.test(type)) {
+        if (!/('function'|'undefined'|'symbol')/.test(type)) {
             return '"' + obj + '"'
         }
     } else {
