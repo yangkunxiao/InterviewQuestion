@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSS</title>
+    <style>
+        :root {
+            --Width: 0;
+            /* --Width:100px; */
+            --border-width: 60px;
+        }
+
+        /*三角形 开口向左上*/
+        .main {
+            width: var(--Width);
+            height: var(--Width);
+            border: var(--border-width) solid;
+            border-color: yellow red green black;
+            border-bottom-color: transparent;
+            /*transparent 表示颜色透明*/
+            border-right-color: transparent;
+        }
+
+        /*扇形 开口向下*/
+        .main2 {
+            width: 0;
+            height: 0;
+            margin-top: 100px;
+            border: 100px solid red;
+            /* border-right-color: transparent;
+            border-bottom-color: transparent;
+            border-left-color: transparent; */
+            border-color: #f00 transparent transparent;
+            border-radius: 100px;
+        }
+
+        /*等腰梯形*/
+        .main3 {
+            margin-top: 100px;
+            width: 100px;
+            height: 100px;
+            border: 70px solid;
+            border-color: red transparent transparent;
+        }
+
+        /*直角梯形*/
+        .main4 {
+            margin-top: 100px;
+            width: 0;
+            height: 0;
+            border: 70px solid;
+            border-bottom-width: 0;
+            border-color: red red transparent transparent;
+        }
+
+        /*平行四边形*/
+        .main5 {
+            position: relative;
+            margin-top: 100px;
+            border: solid;
+            width: 0;
+            height: 0;
+            border-width: 100px 70px;
+            border-color: yellow red green black;
+            border-right-color: transparent;
+            border-left-color: transparent;
+            border-top-color: transparent;
+        }
+
+        .main5::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            right: -140px;
+            border-right:70px solid transparent ;
+            border-left:70px solid transparent ;
+            border-top:100px solid red ;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="main"></div>
+    <div class="main2"></div>
+    <div class="main3"></div>
+    <div class="main4"></div>
+    <div class="main5"></div>
+</body>
+
+</html>
