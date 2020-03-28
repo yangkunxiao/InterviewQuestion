@@ -1,7 +1,7 @@
 //数组扁平化
 
 //1、es6的flat方法.接受参数表示拉伸的等级，未知等级可以使用Infinity
-function flat(array) {
+function flat1(array) {
 	return array.flat(Infinity)
 }
 //2、replace + split/JSON.parse
@@ -45,5 +45,7 @@ function flat5(array){
 let array = [1, 2, [4, 3, [4, [5, 6]], 7], 8]
 // flat3(array)
 // console.log(res)
-
+console.log(flat1(array))
+console.log(flat2(array))
+console.log(flat4(array))
 console.log(flat5(array))
