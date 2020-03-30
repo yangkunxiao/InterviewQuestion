@@ -135,9 +135,38 @@ Promise.prototype.all = function(promises){
     })
 }
 
-Promise.prototype.catch = function(error){
-    console.log(error,'errrr')
+Promise.prototype.catch = function(onRejected){
+    return this.then(null,onRejected) 
 }
+
+/**
+ * 实现一个Promise.resolve()方法，要注意以下几点：
+• 参数为Promise实例，直接返回该实例
+• 参数为一个thenable对象，Promise.resolve()方法会将这个对象转为 Promise 对象，然后就立即执行thenable对象的then方法。
+• 参数不是具有then方法的对象，或根本就不是对象，则返回一个新的Promise对象，状态为resolve
+• 不带有任何参数，直接返回一个新的promise对象，状态为resolved。
+ */
+Promise.prototype.resolve = function(params){
+	if(params instanceof Promise){
+  	return params
+  }
+  return new Promise((resolve,reject) => {
+  	if(params && prams.then && typeof params.then === 'fuunction'){
+      	params.then(resolve,reject)
+    }else {
+    	resolve(params)
+    }
+  })
+}
+
+//Promise.reject(reason)方法也会返回一个新的 Promise 实例，该实例的状态为rejected
+Promise.prototype.reject = function(reason){
+	return new Promise((resolve,reject) => {
+  	reject(reason)
+  })
+}
+
+
 
 
 let fn = (resolve,reject) => {
