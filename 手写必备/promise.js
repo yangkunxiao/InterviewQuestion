@@ -5,28 +5,28 @@ function Promise(cb) {
 	this.onResolvedCallback = []
 	this.onRejectedCallback = []
 
-    function resolve(value) {
-        setTimeout(() => {
-            if(self.status === 'PENDING'){
-                self.value = value
-                self.status = 'RESOLVED'
-                self.onResolvedCallback.forEach(cb => {
-                    cb(value)
-                })
-            }
-        })
+	function resolve(value) {
+		setTimeout(() => {
+			if (self.status === 'PENDING') {
+				self.value = value
+				self.status = 'RESOLVED'
+				self.onResolvedCallback.forEach(cb => {
+					cb(value)
+				})
+			}
+		})
 	}
 	function reject(value) {
-        setTimeout(() => {
-            if(self.status === 'PENDING'){
-                self.value = value
-                self.status = 'REJECTED'
-                self.onRejectedCallback.forEach(cb => {
-                    new Promise().catch(value);
-                    cb(value)
-                })
-            }
-        })
+		setTimeout(() => {
+			if (self.status === 'PENDING') {
+				self.value = value
+				self.status = 'REJECTED'
+				self.onRejectedCallback.forEach(cb => {
+					new Promise().catch(value)
+					cb(value)
+				})
+			}
+		})
 	}
 	try {
 		cb(resolve, reject)
@@ -35,8 +35,8 @@ function Promise(cb) {
 	}
 }
 /**
- * promise的then方法 返回一个promise对象 
- * 接受成功的回调、失败的回调两个参数 
+ * promise的then方法 返回一个promise对象
+ * 接受成功的回调、失败的回调两个参数
  */
 Promise.prototype.then = function(onResolved, onRejected) {
 	onFulfilled =
@@ -55,8 +55,8 @@ Promise.prototype.then = function(onResolved, onRejected) {
 		if (self.status === 'RESOLVED') {
 			self.onResolvedCallback.push(function() {
 				// onResolved就对应then传入的函数
-                let result = onResolved(self.value);
-                console.log(result,'result')
+				let result = onResolved(self.value)
+				console.log(result, 'result')
 				//如果函数返回值是一个新的promise对象 就继续调用promise的then方法
 				if (result instanceof Promise) {
 					result.then(resolve, reject)
@@ -66,16 +66,16 @@ Promise.prototype.then = function(onResolved, onRejected) {
 				}
 			})
 		} else if (self.status === 'REJECTED') {
-			self.onRejectedCallback.push(function(){
-			    // onResolved就对应then传入的函数
-			    let result = onRejected(self.value);
-			    //如果函数返回值是一个新的promise对象 就继续调用promise的then方法
-			    if(result instanceof Promise){
-			        result.then(resolve,reject)
-			    }else {
-			        //否则直接resolve
-			        reject(result)
-			    }
+			self.onRejectedCallback.push(function() {
+				// onResolved就对应then传入的函数
+				let result = onRejected(self.value)
+				//如果函数返回值是一个新的promise对象 就继续调用promise的then方法
+				if (result instanceof Promise) {
+					result.then(resolve, reject)
+				} else {
+					//否则直接resolve
+					reject(result)
+				}
 			})
 		} else if (self.status === 'PENDING') {
 			self.onResolvedCallback.push(function() {
@@ -88,17 +88,17 @@ Promise.prototype.then = function(onResolved, onRejected) {
 					//否则直接resolve
 					resolve(result)
 				}
-            })
-            self.onRejectedCallback.push(function(){
-			    // onResolved就对应then传入的函数
-			    let result = onRejected(self.value);
-			    //如果函数返回值是一个新的promise对象 就继续调用promise的then方法
-			    if(result instanceof Promise){
-			        result.then(resolve,reject)
-			    }else {
-			        //否则直接resolve
-			        reject(result)
-			    }
+			})
+			self.onRejectedCallback.push(function() {
+				// onResolved就对应then传入的函数
+				let result = onRejected(self.value)
+				//如果函数返回值是一个新的promise对象 就继续调用promise的then方法
+				if (result instanceof Promise) {
+					result.then(resolve, reject)
+				} else {
+					//否则直接resolve
+					reject(result)
+				}
 			})
 		}
 	})
@@ -113,30 +113,33 @@ Promise.prototype.then = function(onResolved, onRejected) {
  * 4、只要有一个失败，状态就变为 rejected，返回值将直接传递给回调all() 的返回值也是新的 Promise 对象
 
  */
-Promise.prototype.all = function(promises){
-    return new Promise((resolve,reject) => {
-        if(!Array.isArray(promises)){
-            return reject(new TypeError('arguments must be an array'));
-        }
-        let count = 0,
-            len=  promises.length,
-            resolveValues = new Array(len);
-        for (let i = 0; i < len; i++) {
-            promises[i].then((value) => {
-                count++;
-                resolveValues[i] = value;
-                if(count === len){
-                    return resolve(resolveValues)
-                }
-            },(value) => {
-                return reject(value)
-            })
-        }
-    })
+Promise.prototype.all = function(promises) {
+	return new Promise((resolve, reject) => {
+		if (!Array.isArray(promises)) {
+			return reject(new TypeError('arguments must be an array'))
+		}
+		let count = 0,
+			len = promises.length,
+			resolveValues = new Array(len)
+		for (let i = 0; i < len; i++) {
+			promises[i].then(
+				value => {
+					count++
+					resolveValues[i] = value
+					if (count === len) {
+						return resolve(resolveValues)
+					}
+				},
+				value => {
+					return reject(value)
+				}
+			)
+		}
+	})
 }
 
-Promise.prototype.catch = function(onRejected){
-    return this.then(null,onRejected) 
+Promise.prototype.catch = function(onRejected) {
+	return this.then(null, onRejected)
 }
 
 /**
@@ -146,34 +149,45 @@ Promise.prototype.catch = function(onRejected){
 • 参数不是具有then方法的对象，或根本就不是对象，则返回一个新的Promise对象，状态为resolve
 • 不带有任何参数，直接返回一个新的promise对象，状态为resolved。
  */
-Promise.prototype.resolve = function(params){
-	if(params instanceof Promise){
-  	return params
-  }
-  return new Promise((resolve,reject) => {
-  	if(params && prams.then && typeof params.then === 'fuunction'){
-      	params.then(resolve,reject)
-    }else {
-    	resolve(params)
-    }
-  })
+Promise.prototype.resolve = function(params) {
+	if (params instanceof Promise) {
+		return params
+	}
+	return new Promise((resolve, reject) => {
+		if (params && prams.then && typeof params.then === 'fuunction') {
+			params.then(resolve, reject)
+		} else {
+			resolve(params)
+		}
+	})
 }
 
 //Promise.reject(reason)方法也会返回一个新的 Promise 实例，该实例的状态为rejected
-Promise.prototype.reject = function(reason){
-	return new Promise((resolve,reject) => {
-  	reject(reason)
-  })
+Promise.prototype.reject = function(reason) {
+	return new Promise((resolve, reject) => {
+		reject(reason)
+	})
+}
+/**
+ * 不管前面的 Promise 是fulfilled还是rejected，都会执行回调函数callback。
+ * finally方法总是会返回原来的值。
+ */
+Promise.prototype.finally = function(callback) {
+	let promise = new Promise()
+	return this.then(
+		value => promise.resolve(callback()).then(() => value),
+		reason =>
+			promise.resolve(callback()).then(() => {
+				throw reason
+			})
+	)
 }
 
-
-
-
-let fn = (resolve,reject) => {
-    resolve(0)
+let fn = (resolve, reject) => {
+	resolve(0)
 	// setTimeout(() => {
-    //     // resolve(1)
-    //     reject(0)
+	//     // resolve(1)
+	//     reject(0)
 	// }, 2000)
 }
 
@@ -196,29 +210,28 @@ let fn = (resolve,reject) => {
 // 	console.log(res)
 // })
 
+let p2 = new Promise((resolve, reject) => {
+	setTimeout(() => {
+		resolve(0)
+	}, 1000)
+})
+let p3 = new Promise((resolve, reject) => {
+	setTimeout(() => {
+		reject(3)
+	}, 1500)
+})
 
-let p2 = new Promise((resolve,reject) => {
-    setTimeout(() => {
-        resolve(0)
-    },1000)
-});
-let p3 = new Promise((resolve,reject) => {
-    setTimeout(() => {
-        reject(3)
-    },1500)
-});
-
-let p4 = new Promise((resolve,reject) => {
-    resolve(1)
-});
+let p4 = new Promise((resolve, reject) => {
+	resolve(1)
+})
 
 // let p4 = new Promise((resolve,reject) => {
 //     reject(2)
 // });
 
-let res = new Promise().all([p2,p3,p4]);
+let res = new Promise().all([p2, p3, p4])
 // console.log(res)
 
 res.then(result => {
-    console.log(result)
+	console.log(result)
 })
