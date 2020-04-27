@@ -1,4 +1,8 @@
 //输出斐波那契数列第n项
+/**
+ * 
+ * 动态规划 ：自底向上求解
+ */
 function Fibonacci(n){
     if(n <= 0) return 0;
     let fib = [];
