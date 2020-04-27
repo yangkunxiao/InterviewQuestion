@@ -154,7 +154,7 @@ Promise.prototype.resolve = function(params) {
 		return params
 	}
 	return new Promise((resolve, reject) => {
-		if (params && prams.then && typeof params.then === 'fuunction') {
+		if (params && prams.then && typeof params.then === 'function') {
 			params.then(resolve, reject)
 		} else {
 			resolve(params)
