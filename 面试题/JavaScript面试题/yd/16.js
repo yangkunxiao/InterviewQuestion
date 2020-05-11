@@ -23,6 +23,8 @@
  * @param {number} n
  * @return {number[]}
  * 递归遍历，使用hash值存放每一个可能出现的值的次数
+ * 第一步：获取n个骰子所有的加值及其出现次数
+ * 第二步：计算每个值的概率
  */
 var twoSum = function(n) {
     let map = new Map();//key ： 
