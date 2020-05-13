@@ -92,3 +92,4 @@ console.log(sum);//number
 }
 fn()
 console.log(fn)//function */
+
