@@ -55,9 +55,10 @@ EventEmitter.prototype.$once = function(type,fn){
     this.$on(type,fn,true)
 }
 
-EventEmitter.prototype.emit = function(type,...args){
+EventEmitter.prototype.$emit = function(type,...args){
     let handler = this.events.get(type),
         eventsArray = [];
+    if(!handler) return
     if(Array.isArray(handler)){
         //简单实现 优化：可以写-深拷贝
         for (let i = 0; i < handler.length; i++) {
@@ -97,7 +98,7 @@ ev.$on('fk1',() => {
 //     console.log('我订阅类一个事件3')
 // })
 
-ev.$offAll('fk');
-// ev.emit('fk',1,2);
+// ev.$offAll('fk');
+ev.$emit('fk',1,2);
 
 console.log(ev.events)
