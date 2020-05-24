@@ -8,7 +8,6 @@
 //  * - Promise
 // */
 
-
 // // 回调函数
 // // function f1(callback) {
 // //     setTimeout(() => {
@@ -21,7 +20,6 @@
 // // }
 
 // // f1(f2)
-
 
 // //事件监听
 
@@ -56,7 +54,7 @@
 //     //     if(String(subs.callback) == String(cb)){
 //     //         subs.delete(type)
 //     //     }else {
-//     //         return 
+//     //         return
 //     //     }
 //     // }else {
 //     //     for (let i = 0; i < subs.length; i++) {
@@ -98,8 +96,6 @@
 //     }
 // }
 
-
-
 // let e2 = new Event();
 
 // e2.$on('fn',function(){
@@ -118,94 +114,131 @@
 
 // console.log(e2.subs)
 
-
 //观察者模式
-function EventEmitter(){
-    this.handlers = new Map()
+// function EventEmitter(){
+//     this.handlers = new Map()
+// }
+
+// const wrap = (fn,once = false) => ({ callback:fn,once })
+
+// //订阅事件
+// EventEmitter.prototype.$on = function(type,fn,once = false){
+//     if(!this.handlers.has(type)) {
+//         this.handlers.set(type,wrap(fn,once))
+//         return
+//     };
+
+//     let handlers = this.handlers.get(type);
+
+//     if(Array.isArray(handlers)){
+//         this.handlers.set(type,[...handlers,wrap(fn,once)])
+//     }else {
+//         this.handlers.set(type,[handlers,wrap(fn,once)])
+//     }
+// }
+
+// //发布事件
+// EventEmitter.prototype.$emit = function(type,...rest){
+//     if(!this.handlers.has(type)) return;
+//     let handlers = this.handlers.get(type);
+
+//     if(Array.isArray(handlers)){
+//         for (let i = 0; i < handlers.length; i++) {
+//             const handler = handlers[i];
+//             handler.callback.apply(this,rest);
+//             if(handler.once){
+//                 this.$off(type,handler.callback)
+//             }
+//         }
+//     }else {
+//         this.handlers.callback.apply(this,rest)
+//     }
+// }
+
+// //取消事件
+// EventEmitter.prototype.$off = function(type,fn){
+//     if(!this.handlers.has(type)) return;
+//     let handlers = this.handlers.get(type);
+//     let array = [];
+//     if(Array.isArray(handlers)){
+//         for (let i = 0; i < handlers.length; i++) {
+//             array.push(handlers[i])
+//         }
+//         for (let i = 0; i < handlers.length; i++) {
+//             const handler = handlers[i];
+//             if(String(handler.callback) == String(fn)){
+//                 array.splice(i,1)
+//             }
+//         }
+//     }else {
+//         this.handlers.delete(type)
+//     }
+
+//     if(array.length == 0){
+//         this.handlers.delete(type)
+//     }else if(array.length == 1) {
+//         this.handlers.set(type,array[0])
+//     }
+
+// }
+
+// //once
+// EventEmitter.prototype.$once = function(type,fn){
+//     this.$on(type,fn,true)
+// }
+
+// let e2 = new EventEmitter();
+
+// e2.$on('fn',function(){
+//     console.log('e1')
+// })
+
+// // e2.$once('fn',function(){
+// //     console.log('e12')
+// // },)
+
+// e2.$on('fn',function(){
+//     console.log('e123')
+// },true)
+
+// e2.$emit('fn',1,2)
+
+// console.log(e2)
+
+console.log('script start')
+
+async function async1() {
+	await async2()
+	console.log('async1 end')
 }
-
-const wrap = (fn,once = false) => ({ callback:fn,once })
-
-//订阅事件
-EventEmitter.prototype.$on = function(type,fn,once = false){
-    if(!this.handlers.has(type)) {
-        this.handlers.set(type,wrap(fn,once))
-        return
-    };
-
-    let handlers = this.handlers.get(type);
-
-    if(Array.isArray(handlers)){
-        this.handlers.set(type,[...handlers,wrap(fn,once)])
-    }else {
-        this.handlers.set(type,[handlers,wrap(fn,once)])
-    }
+async function async2() {
+	console.log('async2 end')
 }
-
-//发布事件
-EventEmitter.prototype.$emit = function(type,...rest){
-    if(!this.handlers.has(type)) return;
-    let handlers = this.handlers.get(type);
-
-    if(Array.isArray(handlers)){
-        for (let i = 0; i < handlers.length; i++) {
-            const handler = handlers[i];
-            handler.callback.apply(this,rest);
-            if(handler.once){
-                this.$off(type,handler.callback)
-            }
-        }
-    }else {
-        this.handlers.callback.apply(this,rest)
-    }
-}
-
-//取消事件
-EventEmitter.prototype.$off = function(type,fn){
-    if(!this.handlers.has(type)) return;
-    let handlers = this.handlers.get(type);
-    let array = [];
-    if(Array.isArray(handlers)){
-        for (let i = 0; i < handlers.length; i++) {
-            array.push(handlers[i])
-        }
-        for (let i = 0; i < handlers.length; i++) {
-            const handler = handlers[i];
-            if(String(handler.callback) == String(fn)){
-                array.splice(i,1)
-            }
-        }
-    }else {
-        this.handlers.delete(type)
-    }
-
-    if(array.length == 0){
-        this.handlers.delete(type)
-    }else if(array.length == 1) {
-        this.handlers.set(type,array[0])
-    }
-
-}
-
-//once
-EventEmitter.prototype.$once = function(type,fn){
-    this.$on(type,fn,true)
-}
-
-let e2 = new EventEmitter();
-
-e2.$on('fn',function(){
-    console.log('e1')
+async1()
+setTimeout(function () {
+	console.log('setTimeout')
 })
 
-// e2.$once('fn',function(){
-//     console.log('e12')
-// },)
+new Promise((resolve) => {
+	console.log('Promise')
+	resolve()
+})
+	.then(function () {
+		console.log('promise1')
+	})
+	.then(function () {
+		console.log('promise2')
+	})
+console.log('script end')
 
-e2.$on('fn',function(){
-    console.log('e123')
-},true)
 
-e2.$emit('fn',1,2)
-
-console.log(e2)
+/**
+ * script start
+ * async2 end
+ * Promise
+ * script end
+ * async1 end
+ * promise1
+ * promise2
+ * setTimeout
+*/
