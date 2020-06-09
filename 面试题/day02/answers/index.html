@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>day02</title>
     <link rel="stylesheet" href="./index.css">
 </head>
+
 <body>
     <div class="app"></div>
     <div class="box mb-20">
@@ -20,5 +22,19 @@
     <div class="mb-20 box4">
         <div class="main4 bg-y">水平垂直居中方式4</div>
     </div>
+    <script>
+        obj = {
+            name: 'a',
+            getName: function () {
+                console.log(this.name);
+            }
+        }
+        var fn = obj.getName
+        obj.getName()//a
+        var fn2 = obj.getName()//a
+        fn()//undefined
+        fn2()//fn2 is not a function
+    </script>
 </body>
+
 </html>
