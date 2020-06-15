@@ -240,7 +240,7 @@ vue中所有带$的属性和方法：
 
 生命周期相关：
 
-- forceUpdate
+- $forceUpdate
     - 直接调用watcher的update方法更新组件
 - $destroy
     - 触发beforeDestroy生命周期钩子
